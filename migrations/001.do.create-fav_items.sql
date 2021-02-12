@@ -5,11 +5,5 @@ CREATE TABLE fav_items (
     title TEXT NOT NULL,
     youtube_id TEXT NOT NULL, 
     thumbnail TEXT NOT NULL,
-    updated_ts TIMESTAMPTZ NOT NULL DEFAULT now(),
-    created_ts TIMESTAMPTZ NOT NULL DEFAULT now(),
-    
-);
-
-
-
-
+    updated_ts TIMESTAMPTZ  DEFAULT now() NOT NULL,
+    created_ts TIMESTAMPTZ DEFAULT now() NOT NULL);
