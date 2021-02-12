@@ -6,6 +6,7 @@ const helmet = require("helmet");
 const { NODE_ENV } = require("./config");
 const { CLIENT_ORIGIN } = require("./config");
 const { API_BASE_URL } = require("./config");
+const favItemsRouter = require("./fav_items/fav_items-router");
 
 const app = express();
 
@@ -18,6 +19,8 @@ app.use(
     origin: CLIENT_ORIGIN,
   })
 );
+
+app.use("/fav_items", favItemsRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello, world!");
