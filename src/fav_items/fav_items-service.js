@@ -3,12 +3,15 @@ const FavItemsService = {
     return knex
       .select("*")
       .from("fav_items")
-      .join("ratings", "fav_items.id", "=", "ratings.fav_items_id");
+      .join("ratings", "fav_items.id", "=", "ratings.fav_items_id")
+      .join(
+        "fav_items_tags_pivot",
+        "fav_items.id",
+        "=",
+        "fav_items_tags_pivot.fav_items_id"
+      )
+      .join("tags", "fav_items_tags_pivot.tag_id", "=", "tags.id");
   },
-
-  //   knex('users')
-  //   .join('contacts', 'users.id', '=', 'contacts.user_id')
-  //   .select('users.id', 'contacts.phone')
 
   insertItem(knex, newItem) {
     return knex
