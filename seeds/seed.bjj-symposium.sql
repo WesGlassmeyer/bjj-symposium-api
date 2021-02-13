@@ -39,3 +39,5 @@ VALUES
 (3, 7),
 (3, 9);
 
+--$ psql -U wes -d bjj-symposium -f ./seeds/seed.bjj-symposium.sql
+
