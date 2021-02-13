@@ -43,8 +43,11 @@ favItemsRouter
           }
           let ratings = [];
           items.forEach((vid) => {
-            ratings.push(items.value);
+            if (vid.youtube_id === item.youtube_id) {
+              ratings.push(vid.value);
+            }
           });
+          item.rating = ratings;
         });
         res.json(newItems.map(serializeItem));
       })
