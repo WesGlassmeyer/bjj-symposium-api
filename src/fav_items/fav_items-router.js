@@ -10,6 +10,9 @@ const serializeItem = (item) => ({
   id: item.id,
   title: xss(item.title),
   rating: item.rating,
+  tags: item.tags,
+  youtube_id: item.youtube_id,
+  thumbnail: item.thumbnail,
 });
 
 favItemsRouter
@@ -19,13 +22,33 @@ favItemsRouter
     FavItemsService.getAllItems(knexInstance)
       .then((items) => {
         console.log(items);
-        res.json(items.map(serializeItem));
+        const newItems = [];
+        items.forEach((item) => {
+          if (
+            !newItems.find((video) => {
+              return video.youtube_id === item.youtube_id;
+            })
+          ) {
+            let tags = [];
+            items.forEach((video) => {
+              if (
+                !tags.includes(video.name) &&
+                video.youtube_id === item.youtube_id
+              ) {
+                tags.push(video.name);
+              }
+            });
+            item.tags = tags;
+            newItems.push(item);
+          }
+        });
+        res.json(newItems.map(serializeItem));
       })
       .catch(next);
   })
   .post(jsonParser, (req, res, next) => {
-    const { name } = req.body;
-    const newItem = { name };
+    const { title, youtube_id, thumbnail } = req.body;
+    const newItem = { title, youtube_id, thumbnail };
 
     for (const [key, value] of Object.entries(newItem))
       if (value == null)
