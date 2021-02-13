@@ -44,10 +44,13 @@ favItemsRouter
           let ratings = [];
           items.forEach((vid) => {
             if (vid.youtube_id === item.youtube_id) {
-              ratings.push(vid.value);
+              ratings.push(parseInt(vid.value));
             }
           });
-          item.rating = ratings;
+          function average(ratings) {
+            return ratings.reduce((a, b) => a + b) / ratings.length;
+          }
+          item.rating = Math.round(average(ratings));
         });
         res.json(newItems.map(serializeItem));
       })
