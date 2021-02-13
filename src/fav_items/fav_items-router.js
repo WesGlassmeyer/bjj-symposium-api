@@ -41,6 +41,10 @@ favItemsRouter
             item.tags = tags;
             newItems.push(item);
           }
+          let ratings = [];
+          items.forEach((vid) => {
+            ratings.push(items.value);
+          });
         });
         res.json(newItems.map(serializeItem));
       })
