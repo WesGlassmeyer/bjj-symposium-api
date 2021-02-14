@@ -21,7 +21,6 @@ favItemsRouter
     const knexInstance = req.app.get("db");
     FavItemsService.getAllItems(knexInstance)
       .then((items) => {
-        console.log(items);
         const newItems = [];
         items.forEach((item) => {
           if (
@@ -59,6 +58,7 @@ favItemsRouter
   .post(jsonParser, (req, res, next) => {
     const { title, youtube_id, thumbnail } = req.body;
     const newItem = { title, youtube_id, thumbnail };
+    console.log(req.body);
 
     for (const [key, value] of Object.entries(newItem))
       if (value == null)
