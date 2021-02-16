@@ -13,15 +13,17 @@ const FavItemsService = {
       .join("tags", "fav_items_tags_pivot.tag_id", "=", "tags.id");
   },
 
-  insertItem(knex, newItem) {
+  insertItem(knex, newItem, newRating) {
     return knex
       .insert(newItem)
       .into("fav_items")
       .returning("*")
       .then((rows) => {
+        knex.insert(newRating).into("ratings");
         return rows[0];
       });
   },
+
   getById(knex, id) {
     return knex.from("fav_items").select("*").where("id", id).first();
   },
