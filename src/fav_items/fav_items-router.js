@@ -58,15 +58,16 @@ favItemsRouter
   .post(jsonParser, (req, res, next) => {
     const { title, youtube_id, thumbnail } = req.body;
     const newItem = { title, youtube_id, thumbnail };
-    console.log(req.body);
+    const { rating } = req.body;
+    const newRating = { rating };
 
-    for (const [key, value] of Object.entries(newItem))
+    for (const [key, value] of Object.entries(newItem, newRating))
       if (value == null)
         return res.status(400).json({
           error: { message: `Missing '${key}' in request body` },
         });
     //newItem.name = name;
-    FavItemsService.insertItem(req.app.get("db"), newItem)
+    FavItemsService.insertItem(req.app.get("db"), newItem, newRating)
       .then((item) => {
         res
           .status(201)
