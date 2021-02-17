@@ -19,7 +19,15 @@ const FavItemsService = {
       .into("fav_items")
       .returning("*")
       .then((rows) => {
-        knex.insert(newRating).into("ratings");
+        knex
+          .insert(rows[0].id, newRating)
+          .into("ratings")
+          .returning("*")
+          .then((row) => {
+            console.log(row);
+            return row;
+          });
+
         return rows[0];
       });
   },
