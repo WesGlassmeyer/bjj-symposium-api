@@ -13,18 +13,30 @@ const FavItemsService = {
       .join("tags", "fav_items_tags_pivot.tag_id", "=", "tags.id");
   },
 
+  // insertRating(knex, newRating) {
+  //   return knex
+  //     .insert({ value: newRating.rating })
+  //     .into("ratings")
+  //     .returning("*")
+  //     .then((row) => {
+  //       console.log(row);
+  //       return row;
+  //     });
+  // },
+
   insertItem(knex, newItem, newRating) {
     return knex
       .insert(newItem)
       .into("fav_items")
       .returning("*")
       .then((rows) => {
-        knex
-          .insert(rows[0].id, newRating)
+        console.log(newRating.rating);
+        return knex
+          .insert([{ fav_items_id: rows[0].id }, { value: newRating.rating }])
           .into("ratings")
           .returning("*")
           .then((row) => {
-            console.log(row);
+            console.log(newRating.rating);
             return row;
           });
 
