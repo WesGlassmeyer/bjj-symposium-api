@@ -13,6 +13,28 @@ const FavItemsService = {
       .join("tags", "fav_items_tags_pivot.tag_id", "=", "tags.id");
   },
 
+  insertItem(knex, newItem, newRating, newTags) {
+    return knex
+      .insert(newItem)
+      .into("fav_items")
+      .returning("*")
+      .then((rows) => {
+        console.log(newTags);
+        knex
+          .insert(
+            { fav_items_id: parseInt(rows[0].id) },
+            { value: newRating.rating }
+          )
+          .into("ratings")
+          .returning("*")
+          .then((row) => {
+            return row;
+          });
+
+        return rows[0];
+      });
+  },
+
   // insertRating(knex, newRating) {
   //   return knex
   //     .insert({ value: newRating.rating })
@@ -24,25 +46,36 @@ const FavItemsService = {
   //     });
   // },
 
-  insertItem(knex, newItem, newRating) {
-    return knex
-      .insert(newItem)
-      .into("fav_items")
-      .returning("*")
-      .then((rows) => {
-        console.log(newRating.rating);
-        return knex
-          .insert([{ fav_items_id: rows[0].id }, { value: newRating.rating }])
-          .into("ratings")
-          .returning("*")
-          .then((row) => {
-            console.log(newRating.rating);
-            return row;
-          });
-
-        return rows[0];
-      });
-  },
+  //     knex
+  //       .select("youtube_id")
+  //       .from("fav_items")
+  //       .where("youtube_id", newItem.youtube_id)
+  //       .then((favVideoList) => {
+  //         console.log(favVideoList);
+  //         if (favVideoList.length === 0) {
+  //           return knex
+  //             .insert(newItem)
+  //             .into("fav_items")
+  //             .returning("*")
+  //             .then((rows) => {
+  //               console.log(newTags);
+  //               knex
+  //                 .insert(
+  //                   { value: newRating.rating },
+  //                   { fav_items_id: rows[0].id }
+  //                 )
+  //                 .into("ratings")
+  //                 .returning("*")
+  //                 .then((row) => {
+  //                   return row;
+  //                 });
+  //               console.log("inserted video --------------------------");
+  //               return rows[0];
+  //             });
+  //         }
+  //         console.log("_____________________video not inserted");
+  //       });
+  //   },
 
   getById(knex, id) {
     return knex.from("fav_items").select("*").where("id", id).first();
