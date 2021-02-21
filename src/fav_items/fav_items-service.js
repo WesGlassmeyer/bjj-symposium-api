@@ -14,44 +14,77 @@ const FavItemsService = {
   },
 
   insertItem(knex, newItem, newRating, newTags) {
+    let favItem;
     return knex
-      .insert(newItem)
-      .into("fav_items")
-      .returning("*")
-      .then((rows) => {
-        console.log(newTags);
-        knex
-          .insert(
-            { fav_items_id: parseInt(rows[0].id) },
-            { value: newRating.rating }
-          )
+      .select("*")
+      .from("fav_items")
+      .where("youtube_id", newItem.youtube_id)
+      .then((favVideo) => {
+        if (favVideo.length === 0) {
+          return knex.insert(newItem).into("fav_items").returning("*");
+        } else {
+          return favVideo;
+        }
+      })
+      .then((newFavItem) => {
+        favItem = newFavItem[0];
+        return knex
+          .insert({ fav_items_id: newFavItem[0].id, value: newRating.rating })
           .into("ratings")
-          .returning("*")
-          .then((row) => {
-            return row;
-          });
-
-        return rows[0];
+          .returning("*");
+      })
+      .then((newRatingRows) => {
+        console.log(newRatingRows, "aaaaaaaaaaaaaaaaaaa");
+        return knex.select("id").from("tags").whereIn("name", newTags);
+        // knex.insert(newTags).into("fav_items_tags_pivot")
+      })
+      .then((parsedTags) => {
+        console.log(parsedTags, "bbbbbbbbbbbbbbb");
+        for (i = 0; i < parsedTags.length; i++) {
+          return knex
+            .insert({ tag_id: parsedTags[i].id, fav_items_id: favItem.id })
+            .into("fav_items_tags_pivot");
+        }
       });
   },
 
-  // insertRating(knex, newRating) {
+  // return (
+  //   knex
+  //     .select("*")
+  //     .from("fav_items_tags_pivot")
+  //     // .whereIn("tag_id", parsedTags.id)
+  //     .whereNot("fav_items_id", favItem.id)
+  //     .then((matchedTags) => {
+  //       console.log(matchedTags, "ccccccccccccccccccc");
+  //       return matchedTags;
+  //     })
+  // );
+
+  //{
   //   return knex
-  //     .insert({ value: newRating.rating })
-  //     .into("ratings")
+  //     .insert(newItem)
+  //     .into("fav_items")
   //     .returning("*")
-  //     .then((row) => {
-  //       console.log(row);
-  //       return row;
+  //     .then((rows) => {
+  //       console.log(newTags);
+  //       knex
+  //         .insert({ fav_items_id: rows[0].id, value: newRating.rating })
+  //         .into("ratings")
+  //         .returning("*")
+  //         .then((row) => {
+  //           return row;
+  //         });
+
+  //       return rows[0];
   //     });
   // },
 
-  //     knex
+  //
+  //       .then((favVideoList) => {
+  //         consol knex
   //       .select("youtube_id")
   //       .from("fav_items")
-  //       .where("youtube_id", newItem.youtube_id)
-  //       .then((favVideoList) => {
-  //         console.log(favVideoList);
+  //       .where("youtube_id", newItem.youtube_id)e.log(favVideoList);
   //         if (favVideoList.length === 0) {
   //           return knex
   //             .insert(newItem)
