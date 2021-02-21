@@ -12,15 +12,27 @@ before("make knex instance", () => {
 
 after("disconnect from db", () => db.destroy());
 
-before("clean the table", () => db("fav_items_tags_pivot").delete());
-before("clean the table", () => db("ratings").delete());
-before("clean the table", () => db("fav_items").delete());
-before("clean the table", () => db("tags").delete());
+before("clean the table", () =>
+  db.raw(
+    "TRUNCATE fav_items_tags_pivot, tags, ratings, fav_items RESTART IDENTITY CASCADE"
+  )
+);
 
-afterEach("cleanup", () => db("fav_items_tags_pivot").delete());
-afterEach("cleanup", () => db("ratings").delete());
-afterEach("cleanup", () => db("fav_items").delete());
-afterEach("cleanup", () => db("tags").delete());
+// before("clean the table", () => db("fav_items_tags_pivot").delete());
+// before("clean the table", () => db("ratings").delete());
+// before("clean the table", () => db("fav_items").delete());
+// before("clean the table", () => db("tags").delete());
+
+afterEach("clean the table", () =>
+  db.raw(
+    "TRUNCATE fav_items_tags_pivot, tags, ratings, fav_items RESTART IDENTITY CASCADE"
+  )
+);
+
+// afterEach("cleanup", () => db("fav_items_tags_pivot").delete());
+// afterEach("cleanup", () => db("ratings").delete());
+// afterEach("cleanup", () => db("fav_items").delete());
+// afterEach("cleanup", () => db("tags").delete());
 
 describe("GET /fav_items", () => {
   const testFavItems = fixtures.makeFavItemsArray();
@@ -32,11 +44,11 @@ describe("GET /fav_items", () => {
   beforeEach("insert fav_items", () => {
     return db.into("fav_items").insert(testFavItems);
   });
-  beforeEach("insert ratings", () => {
-    return db.into("ratings").insert(testRatings);
-  });
   beforeEach("insert tags", () => {
     return db.into("tags").insert(testTags);
+  });
+  beforeEach("insert ratings", () => {
+    return db.into("ratings").insert(testRatings);
   });
   beforeEach("insert tags pivot", () => {
     return db.into("fav_items_tags_pivot").insert(testTagsPivot);
