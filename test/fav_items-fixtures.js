@@ -113,11 +113,11 @@ function makeTagsArray() {
       category: "Actions",
     },
     {
-      name: "Control",
+      name: "Reversal",
       category: "Actions",
     },
     {
-      name: "Reversal",
+      name: "Control",
       category: "Actions",
     },
     {
