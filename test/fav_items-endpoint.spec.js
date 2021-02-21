@@ -5,20 +5,22 @@ const app = require("../src/app");
 before("make knex instance", () => {
   db = knex({
     client: "pg",
-    connection: process.env.DATABASE_URL,
+    connection: process.env.TEST_DATABASE_URL,
   });
   app.set("db", db);
 });
 
 after("disconnect from db", () => db.destroy());
 
-before("clean the table", () =>
-  db("fav_items_tags_pivot", "tags", "ratings", "fav_items").truncate()
-);
+before("clean the table", () => db("fav_items_tags_pivot").delete());
+before("clean the table", () => db("ratings").delete());
+before("clean the table", () => db("fav_items").delete());
+before("clean the table", () => db("tags").delete());
 
-afterEach("cleanup", () =>
-  db("fav_items_tags_pivot", "tags", "ratings", "fav_items").truncate()
-);
+afterEach("cleanup", () => db("fav_items_tags_pivot").delete());
+afterEach("cleanup", () => db("ratings").delete());
+afterEach("cleanup", () => db("fav_items").delete());
+afterEach("cleanup", () => db("tags").delete());
 
 describe("GET /fav_items", () => {
   const testFavItems = fixtures.makeFavItemsArray();
