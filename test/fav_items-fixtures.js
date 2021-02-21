@@ -41,7 +41,7 @@ function makeExpectedFavItemsArray() {
     {
       id: 3,
       title: "BJJ Moves: Arm Bar From Guard by John Danaher",
-      rating: 3,
+      rating: 4,
       youtube_id: "pQ43Oy5k9yQ",
       tags: ["Choke", "Kimura", "Leg Locks"],
       thumbnail: "https://i.ytimg.com/vi/pQ43Oy5k9yQ/default.jpg",
