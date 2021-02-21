@@ -102,35 +102,6 @@ favItemsRouter
   })
   .get((req, res, next) => {
     res.json(serializeItem(res.item));
-  })
-  .delete((req, res, next) => {
-    FavItemsService.deleteItem(req.app.get("db"), req.params.itemid)
-      .then((numRowsAffected) => {
-        res.status(204).end();
-      })
-      .catch(next);
-  })
-  .patch(jsonParser, (req, res, next) => {
-    const { name } = req.body;
-    const itemToUpdate = { name };
-
-    const numberOfValues = Object.values(itemToUpdate).filter(Boolean).length;
-    if (numberOfValues === 0)
-      return res.status(400).json({
-        error: {
-          message: `Request body must contain a item name`,
-        },
-      });
-
-    FavItemsService.updateItem(
-      req.app.get("db"),
-      req.params.itemid,
-      itemToUpdate
-    )
-      .then((numRowsAffected) => {
-        res.status(204).end();
-      })
-      .catch(next);
   });
 
 module.exports = favItemsRouter;
