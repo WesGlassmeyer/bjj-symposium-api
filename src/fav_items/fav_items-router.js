@@ -61,7 +61,7 @@ favItemsRouter
     const { rating } = req.body;
     const newRating = { rating };
     const { tags } = req.body;
-    const newTags = { tags };
+    const newTags = tags;
 
     for (const [key, value] of Object.entries(newItem, newRating))
       if (value == null)
@@ -69,8 +69,14 @@ favItemsRouter
           error: { message: `Missing '${key}' in request body` },
         });
     //newItem.name = name;
-    FavItemsService.insertItem(req.app.get("db"), newItem, newRating, newTags)
+    return FavItemsService.insertItem(
+      req.app.get("db"),
+      newItem,
+      newRating,
+      newTags
+    )
       .then((item) => {
+        console.log(item, "====================");
         res
           .status(201)
           .location(path.posix.join(req.originalUrl, `/${item.id}`))
