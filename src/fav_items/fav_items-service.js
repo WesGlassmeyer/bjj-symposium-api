@@ -1,7 +1,7 @@
 const FavItemsService = {
   getAllItems(knex) {
     return knex
-      .select("*")
+      .select("fav_items.*", "ratings.value", "tags.name")
       .from("fav_items")
       .join("ratings", "fav_items.id", "=", "ratings.fav_items_id")
       .join(
@@ -45,6 +45,9 @@ const FavItemsService = {
         }
         return favItem;
       });
+  },
+  getById(knex, id) {
+    return knex.from("fav_items").select("*").where("youtube_id", id).first();
   },
 };
 
