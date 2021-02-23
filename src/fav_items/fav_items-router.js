@@ -76,10 +76,9 @@ favItemsRouter
       newTags
     )
       .then((item) => {
-        console.log(item, "====================");
         res
           .status(201)
-          .location(path.posix.join(req.originalUrl, `/${item.id}`))
+          .location(path.posix.join(req.originalUrl, `/${item.youtube_id}`))
           .json(serializeItem(item));
       })
       .catch(next);
