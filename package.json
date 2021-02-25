@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "migrate:production": "env ssl=true NODE_TLS_REJECT_UNAUTHORIZED=0 DATABASE_URL=postgres://hvowabuwoeyvdh:2800dbc3f81859f275ba4eaaa0aca3554e04d46389ce1c5255ca2119685ee705@ec2-3-231-194-96.compute-1.amazonaws.com:5432/dfhg26h8akbdfo npm run migrate",
     "migrate": "postgrator --config postgrator-config.js",
     "test": "mocha --require test/setup.js",
     "dev": "nodemon src/server.js",
