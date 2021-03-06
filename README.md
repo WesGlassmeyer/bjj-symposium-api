@@ -72,7 +72,7 @@ Content-Type: 'application/json',
 ```
 
 - Response Body will be an array of JSON Objects:
-```
+
 
 [{
 "id":Integer,
@@ -82,3 +82,5 @@ Content-Type: 'application/json',
 "youtube_id":"YouTubeVideoIdString",
 "thumbnail":"VideoThumbnailString"
 }]
+
+```
