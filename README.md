@@ -8,7 +8,7 @@ The front end client can be found at https://github.com/WesGlassmeyer/bjj-sympos
 
 ## Introduction
 
-With so much BJJ available instructional videos on the web and social media sites, it's hard to separate the good from the exceptional. BJJ Symposium cuts through the BS and helps community members to narrow their search to vetted videos added by other members.
+With so many BJJ instructional videos on the web and social media sites, it's hard to separate the good from the exceptional. BJJ Symposium cuts through the BS and helps community members to narrow their search to vetted videos added by other members.
 
 ## Quick App Demo
 
