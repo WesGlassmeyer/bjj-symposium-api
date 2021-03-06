@@ -73,28 +73,22 @@ describe(`POST /fav_items`, () => {
       tags: ["Back Mount", "Guard", "Reversal"],
       thumbnail: "https://i.ytimg.com/vi/ODuQCA88oY4/default.jpg",
     };
-    return (
-      supertest(app)
-        .post("/fav_items")
-        //   .set("Authorization", `Bearer ${process.env.API_TOKEN}`)
-        .send(newFavItem, newFavRating, newFavTags)
-        .expect(201)
-        .expect((res) => {
-          expect(res.body.title).to.eql(newFavItem.title);
-          expect(res.body.rating).to.eql(newFavRating.rating);
-          expect(res.body.youtube_id).to.eql(newFavItem.youtube_id);
-          expect(res.body.thumbnail).to.eql(newFavItem.thumbnail);
-          expect(res.body).to.have.property("id");
-          expect(res.headers.location).to.eql(
-            `/fav_items/${res.body.youtube_id}`
-          );
-        })
-        .then((res) =>
-          supertest(app)
-            .get(`/fav_items/${res.body.youtube_id}`)
-            // .set("Authorization", `Bearer ${process.env.API_TOKEN}`)
-            .expect(res.body)
-        )
-    );
+    return supertest(app)
+      .post("/fav_items")
+      .send(newFavItem, newFavRating, newFavTags)
+      .expect(201)
+      .expect((res) => {
+        expect(res.body.title).to.eql(newFavItem.title);
+        expect(res.body.rating).to.eql(newFavRating.rating);
+        expect(res.body.youtube_id).to.eql(newFavItem.youtube_id);
+        expect(res.body.thumbnail).to.eql(newFavItem.thumbnail);
+        expect(res.body).to.have.property("id");
+        expect(res.headers.location).to.eql(
+          `/fav_items/${res.body.youtube_id}`
+        );
+      })
+      .then((res) =>
+        supertest(app).get(`/fav_items/${res.body.youtube_id}`).expect(res.body)
+      );
   });
 });
