@@ -68,7 +68,6 @@ favItemsRouter
         return res.status(400).json({
           error: { message: `Missing '${key}' in request body` },
         });
-    //newItem.name = name;
     return FavItemsService.insertItem(
       req.app.get("db"),
       newItem,
