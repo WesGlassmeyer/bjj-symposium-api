@@ -1,26 +1,84 @@
-# Express Boilerplate!
+# BJJ Symposium Api
 
-This is a boilerplate project used for starting new projects!
+Simplify your search for Brazilian Jiu Jitsu instructional videos. If you find a video you like then add it to the Community Favorites Page.
 
-## Set up
+This is the backend for `bjj-symposium.app`. A live version of the app can be found at https://bjj-symposium.vercel.app/
 
-Complete the following steps to start a new project (NEW-PROJECT-NAME):
+The front end client can be found at https://github.com/WesGlassmeyer/bjj-symposium
 
-1. Clone this repository to your local machine `git clone BOILERPLATE-URL NEW-PROJECTS-NAME`
-2. `cd` into the cloned repository
-3. Make a fresh start of the git history for this project with `rm -rf .git && git init`
-4. Install the node dependencies `npm install`
-5. Move the example Environment file to `.env` that will be ignored by git and read by the express server `mv example.env .env`
-6. Edit the contents of the `package.json` to use NEW-PROJECT-NAME instead of `"name": "express-boilerplate",`
+## Introduction
 
-## Scripts
+With so much BJJ available instructional videos on the web and social media sites, it's hard to separate the good from the exceptional. BJJ Symposium cuts through the BS and helps community members to narrow their search to vetted videos added by other members.
 
-Start the application `npm start`
+## Quick App Demo
 
-Start nodemon for the application `npm run dev`
+![](gif/demo.gif)
 
-Run the tests `npm test`
+## Technology
 
-## Deploying
+#### Back End
 
-When your new project is ready for deployment, add a new Heroku application with `heroku create`. This will make a new git remote called "heroku" and you can then `npm run deploy` which will push to this remote's main branch.
+- Node and Express
+  - RESTful Api
+- Testing
+  - Supertest
+  - Mocha and Chai
+- Database
+  - Postgres
+  - Knex.js
+
+#### Production
+
+Deployed via Heroku
+
+## API Documentation
+
+- Request Type: `POST`
+- Path `https://hidden-bayou-12327.herokuapp.com/fav_items`
+- Required Request Headers:  
+  `{Content-Type: 'application/json'}`
+- Required JSON Body:
+
+```
+{
+  title: 'VideoTitleStringGoesHere',
+  thumbnail: 'VideoThumbnailStringGoesHere',
+  youtube_id: 'YoutubeVideoIdStringGoesHere',
+  rating: IntegerValue1-5,
+  tags: ['TagString', 'TagString']
+}
+```
+
+- Response Body will be:
+
+````{
+  'id': Integer,
+  'title': 'VideoTitleStringGoesHere',
+  'thumbnail': 'VideoThumbnailStringGoesHere',
+  'youtube_id': 'YouTubeVideoIdStringGoesHere',
+}```
+
+
+### GET Community Favorite Videos
+- Request Type: `GET`
+- Path `https://hidden-bayou-12327.herokuapp.com/fav_items`
+- Required Request Headers:
+````
+
+{
+Content-Type: 'application/json',
+}
+
+```
+
+- Response Body will be an array of JSON Objects:
+```
+
+[{
+"id":Integer,
+"title":"VideoTitleString",
+"rating":Integer,
+"tags":['TagString', 'TagString'],
+"youtube_id":"YouTubeVideoIdString",
+"thumbnail":"VideoThumbnailString"
+}]
